@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<title>Openweather UI</title>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+		<style type="text/css">
+			input, button {
+				margin-top: 10px;
+			}
+		</style>
+		<script type="text/javascript">
+			$(function() {
+				$("#get-temperature-btn").click(function() {
+					var domain = $("#domain").val(),
+						api = $("#api").val(),
+						city = $("#city").val();
+					$.get("http://" + domain + "/data/2.5/weather?q=" + city + "&units=metric&APPID=" + api, function(data) {
+							$("#output").text("Temperature in " + city + " is " + data.main.temp);
+					});
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<input type="text" id="domain" class="form-control" placeholder="Domain">
+			<input type="password" id="api" class="form-control" placeholder="API Key">
+			<input type="text" id="city" class="form-control" placeholder="City Name">
+			<button type="button" id="get-temperature-btn" class="btn btn-primary">Get Temperature</button>
+			<span id="output"></span>
+		</div>
+	</body>
+</html>

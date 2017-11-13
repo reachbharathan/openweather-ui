@@ -1,34 +1,53 @@
 <html>
-	<head>
-		<title>Openweather UI</title>
-		<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
-		<style type="text/css">
-			input, button {
-				margin-top: 10px;
-			}
-		</style>
-		<script type="text/javascript">
-			$(function() {
-				$("#get-temperature-btn").click(function() {
-					var domain = $("#domain").val(),
-						api = $("#api").val(),
-						city = $("#city").val();
-					$.get("http://" + domain + "/data/2.5/weather?q=" + city + "&units=metric&APPID=" + api, function(data) {
-							$("#output").text("Temperature in " + city + " is " + data.main.temp);
-					});
+
+<head>
+	<title>Openweather UI</title>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+	<style type="text/css">
+		input,
+		button {
+			margin-top: 10px;
+		}
+	</style>
+	<script type="text/javascript">
+		$(function() {
+			$("#get-temperature-btn").click(function() {
+				var domain = $("#domain").val(),
+					api = $("#api").val(),
+					city = $("#city").val();
+				$.get("http://" + domain + "/data/2.5/weather?q=" + city + "&units=metric&APPID=" + api, function(data,status) {
+					$("#cityText").text(data.name + " weather update");
+					$("#temperature").text("Temperature is " + data.main.temp);
+					$("#weather").text("Weather is " + data.weather[0].description);
+					$("#status").text("Status is " + status);
 				});
 			});
-		</script>
-	</head>
-	<body>
-		<div class="container-fluid">
-			<input type="text" id="domain" class="form-control" placeholder="Domain">
-			<input type="password" id="api" class="form-control" placeholder="API Key">
-			<input type="text" id="city" class="form-control" placeholder="City Name">
-			<button type="button" id="get-temperature-btn" class="btn btn-primary">Get Temperature</button>
-			<span id="output"></span>
-		</div>
-	</body>
+		});
+	</script>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<input type="text" id="domain" class="form-control" placeholder="Domain" value="api.openweathermap.org">
+		<input type="password" id="api" class="form-control" placeholder="API Key" value="7fccc77ed9c1f1f56366a13535f46ddd">
+		<input type="text" id="city" class="form-control" placeholder="City Name" value="Chennai">
+		<button type="button" id="get-temperature-btn" class="btn btn-primary">Get Temperature</button>
+
+	</div>
+	<div style="text-align: center;">
+		<br /><br />
+		<br /><br />
+		<span id="cityText" style="font-size: 250%; background: inherit;"></span>
+		<br /><br />
+		<span id="temperature" style="font-size: 250%; background: inherit;"></span>
+		<br /><br />
+		<span id="weather" style="font-size: 250%; background: inherit;"></span>
+		<br /><br />
+		<span id="status" style="font-size: 250%; background: inherit;"></span>
+	</div>
+
+</body>
+
 </html>

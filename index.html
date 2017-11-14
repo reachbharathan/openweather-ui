@@ -12,16 +12,30 @@
 		}
 	</style>
 	<script type="text/javascript">
-		$(function() {
+		$(document).ready(function() {
+
 			$("#get-temperature-btn").click(function() {
 				var domain = $("#domain").val(),
 					api = $("#api").val(),
 					city = $("#city").val();
-				$.get("http://" + domain + "/data/2.5/weather?q=" + city + "&units=metric&APPID=" + api, function(data,status) {
-					$("#cityText").text(data.name + " weather update");
-					$("#temperature").text("Temperature is " + data.main.temp);
-					$("#weather").text("Weather is " + data.weather[0].description);
-					$("#status").text("Status is " + status);
+				var weatherurl = "http://" + domain + "/data/2.5/weather?q=" + city + "&units=metric&APPID=" + api;
+				console.log(weatherurl);
+				$.ajax({
+					url: weatherurl,
+					success: function(result, textStatus, xhr) {
+						$("#cityText").text(result.name + " weather update");
+						$("#temperature").text("Temperature is " + result.main.temp);
+						$("#weather").text("Weather is " + result.weather[0].description);
+						$("#status-code").text("Status is " + xhr.status);
+						$("#erro-description").text("");
+					},
+					error: function(xhr, ajaxOptions, thrownError) {
+						$("#status-code").text("Status is " + xhr.status);
+						$("#erro-description").text("Error response is " + xhr.responseText);
+						$("#cityText").text(" ");
+						$("#temperature").text(" ");
+						$("#weather").text(" ");
+					}
 				});
 			});
 		});
@@ -36,7 +50,7 @@
 		<button type="button" id="get-temperature-btn" class="btn btn-primary">Get Temperature</button>
 
 	</div>
-	<div style="text-align: center;">
+	<div id="response-section" style="text-align: center;">
 		<br /><br />
 		<br /><br />
 		<span id="cityText" style="font-size: 250%; background: inherit;"></span>
@@ -45,8 +59,11 @@
 		<br /><br />
 		<span id="weather" style="font-size: 250%; background: inherit;"></span>
 		<br /><br />
-		<span id="status" style="font-size: 250%; background: inherit;"></span>
+		<span id="status-code" style="font-size: 250%; background: inherit;"></span>
+		<br /><br />
+		<span id="erro-description" style="font-size: 250%; background: inherit;"></span>
 	</div>
+
 
 </body>
 
